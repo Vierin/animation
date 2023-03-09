@@ -26,7 +26,7 @@ class Main {
         this.view = document.querySelector('.js-animation');
 
         // settings
-        this.itemsCount = 1;
+        this.itemsCount = 2;
         this.itemRadius = 200;
         this.speed = 1;
         
@@ -94,6 +94,8 @@ class Main {
     }
 
     private drawAllItems (count: number) {
+        this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
+
         for (let i = 1; i <= count; i++) {
             this.drawItem(i);
         }
@@ -102,8 +104,6 @@ class Main {
 
 
     private drawItem(count?: number): void {
-        
-        this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
         // draw circles = single item
         for (let j = 0; j < this.circlesCount; j++) {
             // let angle = 125 + j * this.circleStep;
