@@ -1,3 +1,5 @@
+import { ColorPalete, colors } from "./modules/ColorPalete";
+
 class Main {
     private view: HTMLElement;
     private ctx: CanvasRenderingContext2D;
@@ -42,6 +44,8 @@ class Main {
 
         this.startPositionX = window.innerWidth * 0.5;
         
+        const palete = new ColorPalete(this.particlesCount, "#FFEF40", "#424242");
+        
         this.initCanvas();
     }
 
@@ -75,7 +79,12 @@ class Main {
 
     private loop = (): void => {
         this.speed++
-        this.drawAllItems(this.itemsCount);
+
+        this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
+
+        for (let i = 1; i <= this.itemsCount; i++) {
+            this.drawItem(i);
+        }
         
         this.raf = window.requestAnimationFrame(this.loop);
     };
@@ -92,16 +101,6 @@ class Main {
 
         this.start();
     }
-
-    private drawAllItems (count: number) {
-        this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
-
-        for (let i = 1; i <= count; i++) {
-            this.drawItem(i);
-        }
-    }
-
-
 
     private drawItem(count?: number): void {
         // draw circles = single item
@@ -142,15 +141,19 @@ class Main {
         } 
     }
 
+    
+
     private drawParticle(centerForParticles: {x: number; y: number}, i: number, angle: number): void {
         // draw each particle
         const x = centerForParticles.x + this.circleRadius * Math.cos(angle * Math.PI / 180);
         const y = centerForParticles.y + this.circleRadius * Math.sin(angle * Math.PI / 180);
-
+        
+        
         this.ctx.setLineDash([5, 5]);
+        // set colors
+        this.ctx.strokeStyle = colors[i];
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.particleSize, 0, Math.PI * 2);
-        // change position for many items
         this.ctx.closePath();
         this.ctx.stroke();
     }
