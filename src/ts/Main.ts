@@ -20,6 +20,7 @@ class Main {
     private particleStep: number;
     private itemRadius: number;
     private startPositionX: number;
+    private speed: number;
 
     constructor() {
         this.view = document.querySelector('.js-animation');
@@ -27,6 +28,7 @@ class Main {
         // settings
         this.itemsCount = 1;
         this.itemRadius = 200;
+        this.speed = 1;
         
         
         this.circleRadius = 150;
@@ -58,10 +60,6 @@ class Main {
         }
     }
 
-    public draw(): void {
-        // this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
-
-    }
 
     public resize = (wdt?: number, hgt?: number): void => {
         if (!this.canvas) {
@@ -76,7 +74,9 @@ class Main {
     };
 
     private loop = (): void => {
-        this.draw();
+        this.speed++
+        this.drawAllItems(this.itemsCount);
+        
         this.raf = window.requestAnimationFrame(this.loop);
     };
 
@@ -90,10 +90,7 @@ class Main {
         this.canvas.style.width = `${this.viewport.width}px`;
         this.canvas.style.height = `${this.viewport.height}px`;
 
-        // this.start();
-
-        this.drawAllItems(this.itemsCount);
-        
+        this.start();
     }
 
     private drawAllItems (count: number) {
@@ -105,10 +102,12 @@ class Main {
 
 
     private drawItem(count?: number): void {
-
+        
+        this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
         // draw circles = single item
         for (let j = 0; j < this.circlesCount; j++) {
-            let angle = 125 + j * this.circleStep;
+            // let angle = 125 + j * this.circleStep;
+            let angle = this.speed + j * this.circleStep;
             
             let x = this.startPositionX + (this.itemRadius * (2 * (count - 1)))
             
@@ -126,7 +125,7 @@ class Main {
     private drawCirle(centerForCircle: {x: number, y: number}): void {
         // draw 1 circle
         for (let i = 0; i < this.particlesCount; i++) {
-            let angle = (125 + i * this.circleStep);
+            let angle = (100 + i * this.circleStep);
           
             const x = this.itemsCount > 1 
             ? 
