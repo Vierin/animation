@@ -38,7 +38,7 @@ class Main {
         this.circleStep = 360 / this.circlesCount;
         
 
-        this.particlesCount = 20;
+        this.particlesCount = 40;
         this.particleSize = 10;
         this.particleStep = 360 / this.particlesCount;
 
@@ -152,9 +152,14 @@ class Main {
         this.ctx.setLineDash([8]);
         // set colors
         this.ctx.strokeStyle = colors[i];
-        // this.ctx.scale(1, 1);
         this.ctx.beginPath();
-        this.ctx.arc(x, y, this.particleSize, 0, Math.PI * 2);
+        this.ctx.arc(
+            x, 
+            y, 
+            // i > this.particleSize ? 0 : this.particleSize - i, 
+            this.particleSize, 
+            0, 
+            Math.PI * 2);
         this.ctx.closePath();
         this.ctx.stroke();
     }
