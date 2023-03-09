@@ -30,7 +30,7 @@ class Main {
         // settings
         this.itemsCount = 2;
         this.itemRadius = 200;
-        this.speed = 1;
+        this.speed = 0.001;
         
         
         this.circleRadius = 150;
@@ -87,6 +87,7 @@ class Main {
         }
         
         this.raf = window.requestAnimationFrame(this.loop);
+        
     };
 
     private initCanvas(): void {
@@ -105,8 +106,7 @@ class Main {
     private drawItem(count?: number): void {
         // draw circles = single item
         for (let j = 0; j < this.circlesCount; j++) {
-            // let angle = 125 + j * this.circleStep;
-            let angle = this.speed + j * this.circleStep;
+            let angle = 125 + j * this.circleStep;
             
             let x = this.startPositionX + (this.itemRadius * (2 * (count - 1)))
             
@@ -124,7 +124,9 @@ class Main {
     private drawCirle(centerForCircle: {x: number, y: number}): void {
         // draw 1 circle
         for (let i = 0; i < this.particlesCount; i++) {
-            let angle = (100 + i * this.circleStep);
+            let angle = ((this.speed) + i * this.circleStep);
+            // easing
+            angle -= Math.sin((90 + angle) / 180 * Math.PI) * 100 * this.circleStep / 150;
           
             const x = this.itemsCount > 1 
             ? 
@@ -141,17 +143,16 @@ class Main {
         } 
     }
 
-    
 
     private drawParticle(centerForParticles: {x: number; y: number}, i: number, angle: number): void {
         // draw each particle
         const x = centerForParticles.x + this.circleRadius * Math.cos(angle * Math.PI / 180);
         const y = centerForParticles.y + this.circleRadius * Math.sin(angle * Math.PI / 180);
         
-        
-        this.ctx.setLineDash([5, 5]);
+        this.ctx.setLineDash([8]);
         // set colors
         this.ctx.strokeStyle = colors[i];
+        // this.ctx.scale(1, 1);
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.particleSize, 0, Math.PI * 2);
         this.ctx.closePath();
