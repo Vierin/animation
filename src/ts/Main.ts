@@ -11,24 +11,34 @@ class Main {
     private isAnimating = false;
 
     // settings vars
+    private itemsCount: number;
     private circleRadius: number;
-    private circleCount: number;
+    private circlesCount: number;
     private circleStep: number;
-    private particleCount: number;
+    private particlesCount: number;
     private particleSize: number;
     private particleStep: number;
+    private itemRadius: number;
+    private startPositionX: number;
 
     constructor() {
         this.view = document.querySelector('.js-animation');
 
         // settings
+        this.itemsCount = 1;
+        this.itemRadius = 200;
+        
+        
         this.circleRadius = 150;
-        this.circleCount = 20;
-        this.circleStep = 360 / this.circleCount;
+        this.circlesCount = 20;
+        this.circleStep = 360 / this.circlesCount;
+        
 
-        this.particleCount = 20;
+        this.particlesCount = 20;
         this.particleSize = 10;
-        this.particleStep = 360 / this.particleCount;
+        this.particleStep = 360 / this.particlesCount;
+
+        this.startPositionX = window.innerWidth * 0.5;
         
         this.initCanvas();
     }
@@ -81,30 +91,51 @@ class Main {
         this.canvas.style.height = `${this.viewport.height}px`;
 
         // this.start();
-       
-        for (let j = 0; j < this.circleCount; j++) {
-            let angle = 125 + j * this.circleStep;
 
-            const x = window.innerWidth * 0.5;
+        this.drawAllItems(this.itemsCount);
+        
+    }
+
+    private drawAllItems (count: number) {
+        for (let i = 1; i <= count; i++) {
+            this.drawItem(i);
+        }
+    }
+
+
+
+    private drawItem(count?: number): void {
+
+        // draw circles = single item
+        for (let j = 0; j < this.circlesCount; j++) {
+            let angle = 125 + j * this.circleStep;
+            
+            let x = this.startPositionX + (this.itemRadius * (2 * (count - 1)))
+            
             const y = window.innerHeight * 0.5;
-            const radius = 200;
 
             const obj = {
-                x:  x + radius * Math.cos(angle * Math.PI / 180),
-                y:  y + radius * Math.sin(angle * Math.PI / 180)
+                x:  x + this.itemRadius * Math.cos(angle * Math.PI / 180),
+                y:  y + this.itemRadius * Math.sin(angle * Math.PI / 180)
             }
-            
-            
+
             this.drawCirle(obj);
         }
     }
 
     private drawCirle(centerForCircle: {x: number, y: number}): void {
-        for (let i = 0; i < this.particleCount; i++) {
+        // draw 1 circle
+        for (let i = 0; i < this.particlesCount; i++) {
             let angle = (125 + i * this.circleStep);
- 
+          
+            const x = this.itemsCount > 1 
+            ? 
+            (centerForCircle.x - (this.itemRadius * this.itemsCount)) + Math.cos(angle * Math.PI / 180) 
+            : 
+            centerForCircle.x + Math.cos(angle * Math.PI / 180);
+             
             const centerForParticles = { 
-                x: centerForCircle.x + Math.cos(angle * Math.PI / 180),
+                x,
                 y: centerForCircle.y + Math.cos(angle * Math.PI / 180)
             };
 
@@ -113,13 +144,14 @@ class Main {
     }
 
     private drawParticle(centerForParticles: {x: number; y: number}, i: number, angle: number): void {
-
+        // draw each particle
         const x = centerForParticles.x + this.circleRadius * Math.cos(angle * Math.PI / 180);
         const y = centerForParticles.y + this.circleRadius * Math.sin(angle * Math.PI / 180);
 
         this.ctx.setLineDash([5, 5]);
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.particleSize, 0, Math.PI * 2);
+        // change position for many items
         this.ctx.closePath();
         this.ctx.stroke();
     }
