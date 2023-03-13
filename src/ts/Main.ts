@@ -21,7 +21,7 @@ class Main {
     private itemRadius: number;
     private startPositionX: number;
     private speed: number;
-    private test: number;
+    private reallSpeed: number;
     private dotSize: number;
     private colors: string[];
 
@@ -29,7 +29,7 @@ class Main {
         this.view = document.querySelector('.js-animation');
 
         // settings
-        this.itemsCount = 1;
+        this.itemsCount = 2;
         this.itemRadius = 200;
         this.speed = 0.001;
         
@@ -82,7 +82,7 @@ class Main {
     private loop = (): void => {
         this.speed++
          // easing
-        this.test = this.speed % 360 + (1 + Math.sin((90 + this.speed) / 180 * Math.PI)) * 50;     
+        this.reallSpeed = this.speed % 360 + (1 + Math.sin((90 + this.speed) / 180 * Math.PI)) * 50;     
         
         this.ctx.clearRect(0, 0, this.canvas.width * this.pixelRatio, this.canvas.height * this.pixelRatio);
 
@@ -109,15 +109,17 @@ class Main {
         this.start();
     }
 
-    private drawItem(count?: number): void {
+    private drawItem(itemsId?: number): void {
         // draw circles = single item
         for (let j = 0; j < this.circlesCount; j++) {
-            const test = this.speed % 360 + (1 + Math.sin((90 + this.speed + j * 3) / 180 * Math.PI)) * 50;
-            let angle = 125 + j * this.circleStep + test;
+            const reallSpeed = this.speed % 360 + (1 + Math.sin((90 + this.speed + j * 3) / 180 * Math.PI)) * 50;
+            const startPos = 180 * itemsId + 30;
+            
+            let angle = startPos + j * this.circleStep + reallSpeed;
             // console.log();
            
             
-            let x = this.startPositionX + (this.itemRadius * (2 * (count - 1)))
+            let x = this.startPositionX + (this.itemRadius * (2 * (itemsId - 1)))
             
             const y = window.innerHeight * 0.5;
 
@@ -165,7 +167,7 @@ class Main {
         const dotsCount = 5;
         const particleRadius = dotsCount * 3;
         const radius = particleRadius - (particleRadius / this.circlesCount) * circleId;
-        const test = this.speed % 360 + (1 + Math.sin((90 + this.speed + circleId) / 180 * Math.PI)) * 50;
+        const reallSpeed = this.speed % 360 + (1 + Math.sin((90 + this.speed + circleId) / 180 * Math.PI)) * 50;
 
          
         
@@ -177,8 +179,8 @@ class Main {
         // draw dot 
         for (let i = 0; i < dotsCount; i++) {
            
-            const xCenter = x + radius * Math.cos((i * dotStep + test) * Math.PI / 180);
-            const yCenter = y + radius * Math.sin((i * dotStep + test) * Math.PI / 180);
+            const xCenter = x + radius * Math.cos((i * dotStep + reallSpeed) * Math.PI / 180);
+            const yCenter = y + radius * Math.sin((i * dotStep + reallSpeed) * Math.PI / 180);
 
             this.ctx.moveTo(x, y);
             this.ctx.arc(
