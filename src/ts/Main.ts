@@ -39,7 +39,7 @@ class Main {
         this.circleStep = 360 / this.circlesCount;
         
 
-        this.particlesCount = 2; //20
+        this.particlesCount = 20; //20
 
         this.dotSize = 5;
 
@@ -112,8 +112,9 @@ class Main {
     private drawItem(count?: number): void {
         // draw circles = single item
         for (let j = 0; j < this.circlesCount; j++) {
-            const test = this.speed % 360 + (1 + Math.sin((90 + this.speed + j) / 180 * Math.PI)) * 50;
+            const test = this.speed % 360 + (1 + Math.sin((90 + this.speed + j * 3) / 180 * Math.PI)) * 50;
             let angle = 125 + j * this.circleStep + test;
+            // console.log();
            
             
             let x = this.startPositionX + (this.itemRadius * (2 * (count - 1)))
