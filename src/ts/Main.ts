@@ -92,7 +92,7 @@ class Main {
 
         
         
-        // this.raf = window.requestAnimationFrame(this.loop);
+        this.raf = window.requestAnimationFrame(this.loop);
         
     };
 
