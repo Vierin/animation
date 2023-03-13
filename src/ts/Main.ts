@@ -1,4 +1,4 @@
-import { ColorPalete, colors } from "./modules/ColorPalete";
+// import { ColorPalete, colors } from "./modules/ColorPalete";
 
 class Main {
     private view: HTMLElement;
@@ -46,10 +46,7 @@ class Main {
         this.startPositionX = window.innerWidth * 0.5;
         
         // const palete = new ColorPalete(this.circlesCount, "#FFEF40", "#8E8955");
-        this.colors = ["FFEF40","FFEF40","FFEF40","FFEF40","F2E340","E4D640","D7CA40","C9BE41","BCB141","AEA541","A19941","938C41","868041","787341","6B6742","5D5B42","504E42","424242"];
-
-
-        
+        this.colors = ["FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","E0D240","C0B541","A19941","424242","424242","424242","424242","424242","424242","424242","424242"];
         
         this.initCanvas();
     }
