@@ -23,6 +23,7 @@ class Main {
     private itemRadius: number;
     private startPositionX: number;
     private speed: number;
+    private dotSize: number;
 
     constructor() {
         this.view = document.querySelector('.js-animation');
@@ -38,9 +39,11 @@ class Main {
         this.circleStep = 360 / this.circlesCount;
         
 
-        this.particlesCount = 40;
+        this.particlesCount = 20;
         this.particleSize = 10;
         this.particleStep = 360 / this.particlesCount;
+
+        this.dotSize = 5;
 
         this.startPositionX = window.innerWidth * 0.5;
         
@@ -125,6 +128,7 @@ class Main {
         // draw 1 circle
         for (let i = 0; i < this.particlesCount; i++) {
             let angle = ((this.speed) + i * this.circleStep);
+            // let angle = (i * this.circleStep);
             // easing
             angle -= Math.sin((90 + angle) / 180 * Math.PI) * 100 * this.circleStep / 150;
           
@@ -149,19 +153,54 @@ class Main {
         const x = centerForParticles.x + this.circleRadius * Math.cos(angle * Math.PI / 180);
         const y = centerForParticles.y + this.circleRadius * Math.sin(angle * Math.PI / 180);
         
-        this.ctx.setLineDash([8]);
-        // set colors
-        this.ctx.strokeStyle = colors[i];
+        this.drawOneParticle(x, y, i)
+    }
+
+    private drawOneParticle(x: number, y: number, id: number): void {
+        
+        const size = this.dotSize - (this.dotSize / this.particlesCount) * id;
+        
+        const offsetX = size * 2;
+        const offsetY1 = offsetX * .82;
+        const offsetX2 = offsetX * .64;
+        
         this.ctx.beginPath();
+        // 1 
         this.ctx.arc(
-            x, 
-            y, 
-            // i > this.particleSize ? 0 : this.particleSize - i, 
-            this.particleSize, 
-            0, 
-            Math.PI * 2);
-        this.ctx.closePath();
-        this.ctx.stroke();
+            x,
+            y,
+            size, 
+            0, Math.PI * 2);
+        // 2
+        this.ctx.moveTo(x + offsetX, y + 8);
+        this.ctx.arc(
+            x + offsetX, 
+            y + offsetY1, 
+            size, 
+            0, Math.PI * 2); 
+        // 3
+        this.ctx.moveTo(x - offsetX, y + 8);
+        this.ctx.arc(
+            x - offsetX, 
+            y + offsetY1, 
+            size, 
+            0, Math.PI * 2); 
+        // 4 
+        this.ctx.moveTo(x - offsetX2, y + offsetX * 2.1);
+        this.ctx.arc(
+            x - offsetX2, 
+            y + offsetX * 2.1, 
+            size, 
+            0, Math.PI * 2);  
+        // 5
+        this.ctx.moveTo(x + offsetX2, y + offsetX * 2.1);
+        this.ctx.arc(
+            x + offsetX2, 
+            y + offsetX * 2.1, 
+            size, 
+            0, Math.PI * 2); 
+
+        this.ctx.fill();
     }
 }
 
