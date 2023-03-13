@@ -43,7 +43,7 @@ class Main {
 
         this.dotSize = 5;
 
-        this.startPositionX = window.innerWidth * 0.5;
+        
         
         // const palete = new ColorPalete(this.circlesCount, "#FFEF40", "#8E8955");
         this.colors = ["FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","FFEF40","E0D240","C0B541","A19941","424242","424242","424242","424242","424242","424242","424242","424242"];
@@ -92,7 +92,7 @@ class Main {
 
         
         
-        this.raf = window.requestAnimationFrame(this.loop);
+        // this.raf = window.requestAnimationFrame(this.loop);
         
     };
 
@@ -116,11 +116,18 @@ class Main {
             const startPos = 180 * itemsId + 30;
             
             let angle = startPos + j * this.circleStep + reallSpeed;
-            // console.log();
-           
+
+            // full width
+            const offset = 100;
+            const cirlceWidth = this.circleRadius * 2 + offset;
+            const translateX = this.itemsCount > 1 ? cirlceWidth / 2 : 0;
             
-            let x = this.startPositionX + (this.itemRadius * (2 * (itemsId - 1)))
             
+            
+            this.startPositionX = window.innerWidth * 0.5 + translateX;
+            // setPosition
+            let x = this.startPositionX + (cirlceWidth * (itemsId - 1));
+
             const y = window.innerHeight * 0.5;
 
             const obj = {
